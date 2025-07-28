@@ -25,3 +25,7 @@ void Robot::takeDamage(float amount) {
 void Robot::activateShield() {
 	shield = true;
 }
+
+bool Robot::isAlive() const {
+	return health > 0;
+}

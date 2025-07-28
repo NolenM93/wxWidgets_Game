@@ -2,6 +2,6 @@
 #include <wx/wx.h>
 class App : public wxApp
 {public:
-	virtual bool OnInit() override;
+	virtual bool OnInit() override; // Initialize the application
 };
 

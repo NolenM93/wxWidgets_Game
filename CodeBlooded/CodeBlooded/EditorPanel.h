@@ -4,9 +4,9 @@
 #include <wx/sizer.h>
 class EditorPanel : public wxPanel
 {private:
-	wxTextCtrl* textCtrl;
+	wxTextCtrl* textCtrl;// Text control for editing scripts
 public:
-	EditorPanel(wxWindow* parent);
-	std::string getScript() const;
+	EditorPanel(wxWindow* parent);// Constructor to initialize the editor panel
+	std::string getScript() const;// Get the script text from the editor
 };
 

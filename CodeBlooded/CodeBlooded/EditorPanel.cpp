@@ -1,6 +1,6 @@
 #include "EditorPanel.h"
 
-EditorPanel::EditorPanel(wxWindow* parent)
+EditorPanel::EditorPanel(wxWindow* parent)// Constructor to initialize the editor panel
 	: wxPanel(parent, wxID_ANY)
 {
 	textCtrl = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_PROCESS_ENTER);
@@ -9,6 +9,7 @@ EditorPanel::EditorPanel(wxWindow* parent)
 	SetSizer(sizer);
 }
 
-std::string EditorPanel::getScript() const {
+std::string EditorPanel::getScript() const // Get the script text from the editor
+{
 	return textCtrl->GetValue().ToStdString();
 }

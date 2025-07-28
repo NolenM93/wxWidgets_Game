@@ -2,11 +2,11 @@
 
 enum { ID_RunSim = 1 };
 
-wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
+wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)// Event table for MainFrame
 	EVT_MENU(ID_RunSim, MainFrame::OnRunSimulation)
 wxEND_EVENT_TABLE()
 
-MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
+MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size)// Constructor to initialize the main frame
 	: wxFrame(nullptr, wxID_ANY, title, pos, size)
 {
 	wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -22,7 +22,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	SetSizer(sizer);
 }
 
-void MainFrame::OnRunSimulation(wxCommandEvent& event) {
+void MainFrame::OnRunSimulation(wxCommandEvent& event) // Handle the Run Simulation button click event
+{
 	arena->loadScript(editor->getScript());
 	arena->startSimulation();
 }

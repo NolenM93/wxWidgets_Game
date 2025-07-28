@@ -3,11 +3,13 @@
 #include <algorithm>
 #include <cctype>
 
-void ScriptEngine::loadScript(const std::string& code) {
+void ScriptEngine::loadScript(const std::string& code) // Load a script from a string
+{
     script = code;
 }
 
-void ScriptEngine::execute(Robot& bot, const std::vector<Robot>& others) {
+void ScriptEngine::execute(Robot& bot, const std::vector<Robot>& others) // Execute the loaded script for a given robot and other robots in the arena
+{
     if (!bot.isAlive()) return;
 
     std::istringstream stream(script);
@@ -32,7 +34,8 @@ void ScriptEngine::execute(Robot& bot, const std::vector<Robot>& others) {
     }
 }
 
-Vec2 ScriptEngine::parseMoveCommand(const std::string& line) {
+Vec2 ScriptEngine::parseMoveCommand(const std::string& line) // Parse a move command from the script
+{
     size_t start = line.find("(") + 1;
     size_t comma = line.find(",", start);
     size_t end = line.find(")", comma);

@@ -1,0 +1,2 @@
+# Both robots walk toward the center of the arena.
+moveTo(50, 50)

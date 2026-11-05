@@ -1,0 +1,3 @@
+# Default duel: both robots close in and attack when in range.
+moveToNearest()
+attackNearest(8, 4)

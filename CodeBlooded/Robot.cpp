@@ -1,6 +1,7 @@
 #include "Robot.h"
 
 #include <algorithm>
+#include <cmath>
 #include <utility>
 
 Robot::Robot(std::string name, Vec2 pos)
@@ -18,7 +19,7 @@ void Robot::moveTo(const Vec2& target) {
 }
 
 void Robot::takeDamage(float amount) {
-    if (amount < 0.0f) {
+    if (!std::isfinite(amount) || amount < 0.0f) {
         amount = 0.0f;
     }
     if (shield) {

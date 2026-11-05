@@ -200,6 +200,24 @@ void testSimulationResetAndTick() {
     CHECK(sim.hasLivingRobot());
 }
 
+void testMalformedNumbersAreIgnored() {
+    Robot bot("Alpha", Vec2(0.0f, 0.0f));
+    std::vector<Robot> robots{bot};
+    ScriptEngine engine;
+    engine.loadScript(
+        "takeDamage(nan)\n"
+        "takeDamage(inf)\n"
+        "takeDamage(10junk)\n"
+        "attackNearest(8,4,99)\n"
+        "moveTo(1,2,3)\n");
+    engine.execute(robots[0], robots);
+    CHECK(std::isfinite(robots[0].health));
+    CHECK_NEAR(robots[0].health, Robot::kMaxHealth, 1e-5);
+    CHECK_NEAR(robots[0].position.x, 0.0f, 1e-6);
+    CHECK_NEAR(robots[0].position.y, 0.0f, 1e-6);
+    CHECK(robots[0].isAlive());
+}
+
 void testSimulationDuelEventuallyDealsDamage() {
     Simulation sim;
     sim.reset("moveToNearest()\nattackNearest(8, 4)\n");
@@ -232,6 +250,7 @@ int main() {
     testDeadRobotDoesNotAct();
     testFindNearestSkipsSelfAndDead();
     testSimulationResetAndTick();
+    testMalformedNumbersAreIgnored();
     testSimulationDuelEventuallyDealsDamage();
 
     std::cout << g_passed << " passed, " << g_failed << " failed\n";

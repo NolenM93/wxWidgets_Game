@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <cmath>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -9,10 +10,13 @@
 namespace {
 
 bool parseFloat(const std::string& text, float& out) {
+    if (text.empty()) {
+        return false;
+    }
     try {
         std::size_t idx = 0;
         out = std::stof(text, &idx);
-        return idx > 0;
+        return idx == text.size() && std::isfinite(out);
     } catch (const std::exception&) {
         return false;
     }

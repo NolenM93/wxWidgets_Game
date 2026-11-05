@@ -22,6 +22,23 @@ function Find-Exe {
     throw "CodeBlooded.exe not found under build/. Build the Release target first."
 }
 
+function Find-MsvcCrt {
+    # Get-Item returns the CRT directories themselves. Get-ChildItem on the same
+    # glob lists their DLL contents, and -Directory then matches nothing.
+    $matches = @()
+    $vswhere = Join-Path ${env:ProgramFiles(x86)} "Microsoft Visual Studio\Installer\vswhere.exe"
+    if (Test-Path $vswhere) {
+        $installs = & $vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+        foreach ($install in @($installs)) {
+            if ($install) {
+                $matches += @(Get-Item (Join-Path $install "VC\Redist\MSVC\*\x64\Microsoft.VC*.CRT") -ErrorAction SilentlyContinue)
+            }
+        }
+    }
+    $matches += @(Get-Item "C:\Program Files\Microsoft Visual Studio\*\*\VC\Redist\MSVC\*\x64\Microsoft.VC*.CRT" -ErrorAction SilentlyContinue)
+    return $matches | Where-Object { $_ -and $_.PSIsContainer } | Select-Object -Last 1
+}
+
 $exe = Find-Exe
 Write-Host "Packaging $($exe.FullName)"
 
@@ -56,13 +73,16 @@ if ($applocal -and (Test-Path $applocal)) {
     }
 }
 
-$redist = Get-ChildItem "C:\Program Files\Microsoft Visual Studio\2022\*\VC\Redist\MSVC\*\x64\Microsoft.VC143.CRT" -Directory -ErrorAction SilentlyContinue |
-    Select-Object -Last 1
-if ($redist) {
-    Write-Host "Copying MSVC runtime from $($redist.FullName)"
-    Copy-Item (Join-Path $redist.FullName "*.dll") $stage -Force
-} else {
-    Write-Warning "MSVC redistributable CRT not found. The zip may need VC++ Redistributable installed on the target PC."
+$redist = Find-MsvcCrt
+if (-not $redist) {
+    throw "MSVC redistributable CRT not found. Refusing to pack a zip that will not run on a clean PC."
+}
+Write-Host "Copying MSVC runtime from $($redist.FullName)"
+Copy-Item (Join-Path $redist.FullName "*.dll") $stage -Force
+
+$crtDll = Join-Path $stage "vcruntime140.dll"
+if (-not (Test-Path $crtDll)) {
+    throw "vcruntime140.dll was not copied into the package."
 }
 
 $examples = Join-Path $root "examples"

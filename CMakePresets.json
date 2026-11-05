@@ -1,5 +1,5 @@
 {
-  "version": 6,
+  "version": 2,
   "configurePresets": [
     {
       "name": "linux",
@@ -16,24 +16,12 @@
       "generator": "Visual Studio 17 2022",
       "architecture": "x64",
       "binaryDir": "${sourceDir}/build",
-      "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
       }
     }
   ],
   "buildPresets": [
-    {
-      "name": "linux",
-      "configurePreset": "linux"
-    },
-    {
-      "name": "windows-msvc",
-      "configurePreset": "windows-msvc",
-      "configuration": "Release"
-    }
-  ],
-  "testPresets": [
     {
       "name": "linux",
       "configurePreset": "linux"

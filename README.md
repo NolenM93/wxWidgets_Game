@@ -84,7 +84,7 @@ Needs a C++17 compiler, CMake 3.20+, Ninja, and wxWidgets 3.2 GTK 3.
 sudo apt-get install -y build-essential cmake ninja-build libwxgtk3.2-dev
 cmake --preset linux
 cmake --build --preset linux
-ctest --preset linux --output-on-failure
+ctest --test-dir build --output-on-failure
 ./build/bin/CodeBlooded
 ```
 

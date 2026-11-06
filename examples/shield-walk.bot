@@ -1,0 +1,3 @@
+# Raise a shield, then walk toward the opponent without attacking.
+activateShield()
+moveToNearest()
